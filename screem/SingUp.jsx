@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Pressable,
 } from "react-native";
+import axios from "axios";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import COLORS from "../constants/colors";
@@ -15,8 +16,42 @@ import Checkbox from "expo-checkbox";
 import Button from "../components/Button";
 
 const SingUp = ({ navigation }) => {
-  const [isPasswordShown, setIsPasswordShown] = useState(false);
+  const [isPasswordShown, setIsPasswordShown] = useState(true);
   const [isChecked, setIsChecked] = useState(false);
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassowrd] = useState("");
+  const [name, setName] = useState("");
+  const [lastname, setLastname] = useState("");
+
+  const handleSubmit = async () => {
+    const userData = {
+      name,
+      lastname,
+      username,
+      email,
+      password,
+    };
+
+    console.log(userData);
+    try {
+      const response = await axios.post(
+        "https://luckynotesbackend-production.up.railway.app/auth/create",
+        userData
+      );
+      console.log(response.status);
+      console.log(response.data);
+      if (response.data.status == "201") {
+        alert("User created successfully");
+
+        navigation.navigate("login");
+      }
+    } catch (error) {
+      console.error("Axios Error:", error);
+    }
+
+    //navigation.navigate("login") //asi es que se va al login
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.secundary }}>
@@ -70,7 +105,9 @@ const SingUp = ({ navigation }) => {
                 <TextInput
                   placeholder="Enter your User Name"
                   placeholderTextColor={COLORS.terceary}
-                  keyboardType="UserName"
+                  keyboardType="default"
+                  onChangeText={(e) => setUsername(e)}
+                  value={username}
                   style={{
                     color: COLORS.terceary,
                     width: "100%",
@@ -106,11 +143,13 @@ const SingUp = ({ navigation }) => {
                 <TextInput
                   placeholder="Enter your E-mail"
                   placeholderTextColor={COLORS.terceary}
-                  keyboardType="E-mail"
+                  keyboardType="email-address"
                   style={{
                     color: COLORS.terceary,
                     width: "100%",
                   }}
+                  onChangeText={(e) => setEmail(e)}
+                  value={email}
                 />
               </View>
             </View>
@@ -142,11 +181,13 @@ const SingUp = ({ navigation }) => {
                 <TextInput
                   placeholder="Enter your Name"
                   placeholderTextColor={COLORS.terceary}
-                  keyboardType="Name"
+                  keyboardType="default"
                   style={{
                     color: COLORS.terceary,
                     width: "100%",
                   }}
+                  value={name}
+                  onChangeText={(e) => setName(e)}
                 />
               </View>
             </View>
@@ -178,11 +219,13 @@ const SingUp = ({ navigation }) => {
                 <TextInput
                   placeholder="Enter your Last Name"
                   placeholderTextColor={COLORS.terceary}
-                  keyboardType="Last Name"
+                  keyboardType="default"
                   style={{
                     color: COLORS.terceary,
                     width: "100%",
                   }}
+                  value={lastname}
+                  onChangeText={(e) => setLastname(e)}
                 />
               </View>
             </View>
@@ -219,6 +262,9 @@ const SingUp = ({ navigation }) => {
                     color: COLORS.terceary,
                     width: "100%",
                   }}
+                  value={password}
+                  onChangeText={(e) => setPassowrd(e)}
+                  keyboardType="default"
                 />
 
                 <TouchableOpacity
@@ -264,7 +310,7 @@ const SingUp = ({ navigation }) => {
             <Button
               title="Sign Up"
               filled
-              onPress={() => navigation.navigate("welcome")}
+              onPress={handleSubmit}
               style={{
                 marginTop: 18,
                 marginBottom: 4,
