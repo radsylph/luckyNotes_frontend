@@ -39,7 +39,7 @@ const Welcome = ({ navigation }) => {
                 color: COLORS.terceary,
               }}
             >
-              Ler´s Get Started
+              Lets Get Started
             </Text>
             <View style={{ marginVertical: 12 }}>
               <Text

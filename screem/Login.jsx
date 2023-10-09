@@ -15,7 +15,7 @@ import Checkbox from "expo-checkbox";
 import Button from "../components/Button";
 
 const Login = ({ navigation }) => {
-  const [isPasswordShown, setIsPasswordShown] = useState(false);
+  const [isPasswordShown, setIsPasswordShown] = useState(true);
   const [isChecked, setIsChecked] = useState(false);
 
   return (
@@ -70,7 +70,7 @@ const Login = ({ navigation }) => {
                 <TextInput
                   placeholder="Enter your User Name"
                   placeholderTextColor={COLORS.terceary}
-                  keyboardType="UserName"
+                  keyboardType="default"
                   style={{
                     color: COLORS.terceary,
                     width: "100%",
@@ -107,6 +107,7 @@ const Login = ({ navigation }) => {
                   placeholder="Enter your Password"
                   placeholderTextColor={COLORS.terceary}
                   secureTextEntry={isPasswordShown}
+                  keyboardType="default"
                   style={{
                     color: COLORS.terceary,
                     width: "100%",
@@ -172,7 +173,7 @@ const Login = ({ navigation }) => {
                 {" "}
                 Don´t have an account ?
               </Text>
-              <Pressable onPress={() => navigation.navigate("login")}>
+              <Pressable onPress={() => navigation.navigate("singUp")}>
                 <Text
                   style={{
                     fontSize: 16,
