@@ -43,9 +43,8 @@ const SingUp = ({ navigation }) => {
       );
       console.log(response.status);
       console.log(response.data);
-      if (response.data.status == "201") {
-        alert("User created successfully");
-
+      if (response.status == "201") {
+        alert("User created successfully, we have send an email ");
         navigation.navigate("login");
       }
     } catch (error) {
