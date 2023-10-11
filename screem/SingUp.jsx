@@ -7,7 +7,7 @@ import {
   Pressable,
 } from "react-native";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import COLORS from "../constants/colors";
 import { Colors } from "react-native/Libraries/NewAppScreen";
@@ -23,7 +23,9 @@ const SingUp = ({ navigation }) => {
   const [password, setPassowrd] = useState("");
   const [name, setName] = useState("");
   const [lastname, setLastname] = useState("");
+  const [errors, setErrors] = useState([]);
 
+  useEffect(() => {}, [errors]);
   const handleSubmit = async () => {
     const userData = {
       name,

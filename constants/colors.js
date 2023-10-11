@@ -5,4 +5,5 @@ const COLORS = {
     terceary : "#E4EBEC",
 }
 
+
 export default COLORS
