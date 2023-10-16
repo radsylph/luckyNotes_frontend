@@ -14,8 +14,9 @@ import { Colors } from "react-native/Libraries/NewAppScreen";
 import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox";
 import Button from "../components/Button";
+import CustomAlert from "../components/Alert";
 
-const SingUp = ({ navigation }) => {
+const ResetPassword = ({ navigation }) => {
   const [isPasswordShown, setIsPasswordShown] = useState(true);
   const [isChecked, setIsChecked] = useState(false);
   const [username, setUsername] = useState("");
@@ -23,10 +24,13 @@ const SingUp = ({ navigation }) => {
   const [password, setPassowrd] = useState("");
   const [name, setName] = useState("");
   const [lastname, setLastname] = useState("");
-  const [errors, setErrors] = useState([]);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessages, setAlertMessages] = useState([]);
+  const [alertTitle, setAlertTitle] = useState("");
 
-  useEffect(() => {}, [errors]);
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     const userData = {
       name,
       lastname,
@@ -43,15 +47,30 @@ const SingUp = ({ navigation }) => {
       );
       console.log(response.status);
       console.log(response.data);
-      if (response.status == "201") {
-        alert("User created successfully, we have send an email ");
+
+      if (response.status == "200") {
+        alert(
+          "User created successfully , check your email to verify your account"
+        );
         navigation.navigate("login");
       }
     } catch (error) {
-      console.error("Axios Error:", error);
-    }
+      let errors = error.response.data.errors;
 
-    //navigation.navigate("login") //asi es que se va al login
+      if (errors && Array.isArray(errors)) {
+        setAlertMessages(errors.map((error) => error.msg));
+      } else {
+        console.log(error.response.data.errors);
+        // console.log(error.response.data.errors.msg);
+        // const error2 = error.response.data.errors.msg;
+        // setAlertMessages(error2);
+      }
+      setShowAlert(true);
+    }
+  };
+
+  const handleCloseAlert = () => {
+    setShowAlert(false);
   };
 
   return (
@@ -59,6 +78,12 @@ const SingUp = ({ navigation }) => {
       <View style={{ flex: 1, marginHorizontal: 22 }}>
         <ScrollView>
           <View style={{ marginVertical: 22 }}>
+            <CustomAlert
+              visible={showAlert}
+              messages={alertMessages}
+              onClose={handleCloseAlert}
+              title={"you have the following errors"}
+            />
             <Text
               style={{
                 fontSize: 22,
@@ -349,4 +374,4 @@ const SingUp = ({ navigation }) => {
   );
 };
 
-export default SingUp;
+export default ResetPassword;
