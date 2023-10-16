@@ -3,14 +3,11 @@ import { Text, View } from "react-native";
 import { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Login, SingUp, Welcome, Main } from "./screem";
-
+import { Login, SingUp, Welcome, Main, ResetPassword } from "./screem";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  
-
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Welcome">
@@ -41,6 +38,14 @@ export default function App() {
         <Stack.Screen
           name="main"
           component={Main}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="resetPassword"
+          component={ResetPassword}
           options={{
             headerShown: false,
           }}
