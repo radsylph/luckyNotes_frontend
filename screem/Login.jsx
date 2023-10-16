@@ -13,16 +13,58 @@ import { Colors } from "react-native/Libraries/NewAppScreen";
 import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox";
 import Button from "../components/Button.jsx";
+import CustomAlert from "../components/Alert";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Login = ({ navigation }) => {
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessages, setAlertMessages] = useState([]);
+  const [alertTitle, setAlertTitle] = useState("");
   const [isPasswordShown, setIsPasswordShown] = useState(true);
   const [isChecked, setIsChecked] = useState(false);
+  const [user_info, setUser_info] = useState("");
+  const [password, setPassword] = useState("");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const userData = {
+      user_info,
+      password,
+    };
+    try {
+      const response = await axios.post(
+        "https://luckynotesbackend-production.up.railway.app/auth/login",
+        userData
+      );
+      if (response.status == "200") {
+        const token = response.data.token;
+        await AsyncStorage.setItem("token", token);
+
+        navigation.navigate("main");
+      }
+    } catch (error) {
+      let errors = error.response.data.error;
+      setAlertMessages(errors.map((error) => error.msg));
+      setShowAlert(true);
+    }
+  };
+
+  const handleCloseAlert = () => {
+    setShowAlert(false);
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.secundary }}>
       <View style={{ flex: 1, marginHorizontal: 22 }}>
         <ScrollView>
           <View style={{ marginVertical: 22 }}>
+            <CustomAlert
+              visible={showAlert}
+              messages={alertMessages}
+              onClose={handleCloseAlert}
+              title={"you have the following errors"}
+            />
             <Text
               style={{
                 fontSize: 22,
@@ -31,7 +73,7 @@ const Login = ({ navigation }) => {
                 color: COLORS.terceary,
               }}
             >
-              Hey Welcome Back
+              Welcome Back
             </Text>
 
             <Text
@@ -51,7 +93,7 @@ const Login = ({ navigation }) => {
                   color: COLORS.terceary,
                 }}
               >
-                User Name
+                User Name or email
               </Text>
 
               <View
@@ -68,9 +110,11 @@ const Login = ({ navigation }) => {
                 }}
               >
                 <TextInput
-                  placeholder="Enter your User Name"
+                  placeholder="Enter your User Name / email"
                   placeholderTextColor={COLORS.terceary}
                   keyboardType="default"
+                  value={user_info}
+                  onChangeText={(text) => setUser_info(text)}
                   style={{
                     color: COLORS.terceary,
                     width: "100%",
@@ -107,6 +151,8 @@ const Login = ({ navigation }) => {
                   placeholder="Enter your Password"
                   placeholderTextColor={COLORS.terceary}
                   secureTextEntry={isPasswordShown}
+                  value={password}
+                  onChangeText={(text) => setPassword(text)}
                   keyboardType="default"
                   style={{
                     color: COLORS.terceary,
@@ -156,7 +202,7 @@ const Login = ({ navigation }) => {
 
             <Button
               title="login"
-              onPress={() => navigation.navigate("main")}
+              onPress={handleSubmit}
               style={{
                 marginTop: 18,
                 marginBottom: 4,
@@ -184,6 +230,31 @@ const Login = ({ navigation }) => {
                 >
                   {" "}
                   Sign Up
+                </Text>
+              </Pressable>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                marginVertical: 22,
+              }}
+            >
+              <Text style={{ fontSize: 16, color: COLORS.terceary }}>
+                {" "}
+                Forgot your password ?
+              </Text>
+              <Pressable onPress={() => navigation.navigate("resetPassword")}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: COLORS.terceary,
+                    fontWeight: "bold",
+                    marginLeft: 6,
+                  }}
+                >
+                  {" "}
+                  Rest Password
                 </Text>
               </Pressable>
             </View>
