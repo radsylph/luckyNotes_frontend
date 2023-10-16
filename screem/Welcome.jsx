@@ -1,10 +1,39 @@
 import { View, Text, Image, Pressable, SafeAreaView } from "react-native";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import COLORS from "../constants/colors";
 import { LinearGradient } from "expo-linear-gradient";
 import Button from "../components/Button";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Welcome = ({ navigation }) => {
+  const [token, setToken] = useState("");
+
+  const getToken = async () => {
+    try {
+      const tokenAuth = await AsyncStorage.getItem("token");
+      console.log(tokenAuth);
+      if (tokenAuth !== null) {
+        setToken(tokenAuth);
+        navigation.navigate("main"); // navigate to the main screen
+      }
+    } catch (error) {
+      console.log(error);
+      return alert(error);
+    }
+    console.log(token);
+  };
+
+  useEffect(() => {
+    getToken();
+  }, []);
+
+  const redirect = () => {
+    if (token !== null) {
+      navigation.navigate("main");
+    } else {
+      navigation.navigate("login");
+    }
+  };
   return (
     <LinearGradient
       style={{ flex: 1 }}
@@ -55,7 +84,7 @@ const Welcome = ({ navigation }) => {
             <View style={{ width: "100%" }}>
               <Button
                 title="Join Now"
-                onPress={() => navigation.navigate("singUp")}
+                onPress={redirect}
                 style={{
                   marginTop: 22,
                 }}
@@ -69,9 +98,9 @@ const Welcome = ({ navigation }) => {
               }}
             >
               <Text style={{ fontSize: 13, color: COLORS.terceary }}>
-                Already have an account ?
+                Dont have an account ?
               </Text>
-              <Pressable onPress={() => navigation.navigate("login")}>
+              <Pressable onPress={() => navigation.navigate("singUp")}>
                 <Text
                   style={{
                     fontSize: 13,
@@ -80,7 +109,7 @@ const Welcome = ({ navigation }) => {
                     marginLeft: 4,
                   }}
                 >
-                  Login
+                  SingUp
                 </Text>
               </Pressable>
             </View>
