@@ -4,6 +4,7 @@ import COLORS from "../constants/colors";
 import { LinearGradient } from "expo-linear-gradient";
 import Button from "../components/Button";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 const Welcome = ({ navigation }) => {
   const [token, setToken] = useState("");
@@ -11,27 +12,43 @@ const Welcome = ({ navigation }) => {
   const getToken = async () => {
     try {
       const tokenAuth = await AsyncStorage.getItem("token");
-      console.log(tokenAuth);
-      if (tokenAuth !== null) {
+      if (!tokenAuth) {
+        alert("please login again");
+        deleteToken();
+        navigation.navigate("welcome");
+      }
+      if (tokenAuth) {
         setToken(tokenAuth);
-        navigation.navigate("main"); // navigate to the main screen
+        alert("welcome back");
+        navigation.navigate("main");
       }
     } catch (error) {
       console.log(error);
-      return alert(error);
+      alert(error);
     }
-    console.log(token);
+  };
+
+  const deleteToken = async () => {
+    try {
+      await AsyncStorage.removeItem("token");
+      console.log("token removed");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
-    getToken();
+    // deleteToken();
+    // getToken();
   }, []);
 
-  const redirect = () => {
-    if (token !== null) {
-      navigation.navigate("main");
-    } else {
+  const redirect = async () => {
+    getToken();
+    if (!token) {
       navigation.navigate("login");
+    }
+    if (token) {
+      navigation.navigate("main");
     }
   };
   return (
@@ -110,6 +127,21 @@ const Welcome = ({ navigation }) => {
                   }}
                 >
                   SingUp
+                </Text>
+              </Pressable>
+              <Text style={{ fontSize: 13, color: COLORS.terceary }}>
+                Already have an account ?
+              </Text>
+              <Pressable onPress={() => navigation.navigate("login")}>
+                <Text
+                  style={{
+                    fontSize: 13,
+                    color: COLORS.terceary,
+                    fontWeight: "bold",
+                    marginLeft: 4,
+                  }}
+                >
+                  Login
                 </Text>
               </Pressable>
             </View>
