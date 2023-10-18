@@ -21,23 +21,33 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import BarButton from "../components/BarButton";
 
-const Main = () => {
+const Main = ({ navigation }) => {
   const [token, setToken] = useState("");
 
   const getToken = async () => {
     try {
       const tokenAuth = await AsyncStorage.getItem("token");
-      console.log(tokenAuth);
-      if (token !== null) {
+      if (!tokenAuth) {
+        alert("please login again");
+        deleteToken();
+        navigation.navigate("welcome");
+      }
+      if (tokenAuth) {
         setToken(tokenAuth);
-        alert(tokenAuth);
       }
     } catch (error) {
       console.log(error);
-
-      return alert(error);
+      alert(error);
     }
-    console.log(token);
+  };
+
+  const deleteToken = async () => {
+    try {
+      await AsyncStorage.removeItem("token");
+      console.log("token removed");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -67,7 +77,11 @@ const Main = () => {
         />
 
         <View>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("create");
+            }}
+          >
             <Ionicons
               style={{ marginVertical: 5 }}
               name="add-circle"
@@ -87,7 +101,7 @@ const Main = () => {
           renderItem={oneNote}
         />
       </View>
-      <BarButton />
+      <BarButton navigation={navigation} />
     </SafeAreaView>
   );
 };
