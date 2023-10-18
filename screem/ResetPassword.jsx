@@ -17,7 +17,7 @@ import CustomAlert from "../components/Alert";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Login = ({ navigation }) => {
+const ResetPassword = ({ navigation }) => {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessages, setAlertMessages] = useState([]);
   const [alertTitle, setAlertTitle] = useState("");
@@ -164,4 +164,4 @@ const Login = ({ navigation }) => {
   );
 };
 
-export default Login;
+export default ResetPassword;
