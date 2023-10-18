@@ -13,6 +13,7 @@ import {
   Favorite,
   Group,
   Create,
+  EditNote,
 } from "./screem";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -60,6 +61,15 @@ export default function App() {
 
         <Stack.Screen
           name="create"
+          component={Create}
+          options={{
+            headerShown: false,
+            tabBarVisible: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="editNote"
           component={Create}
           options={{
             headerShown: false,
