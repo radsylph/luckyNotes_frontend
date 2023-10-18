@@ -12,6 +12,7 @@ import {
   Trash,
   Favorite,
   Group,
+  Create,
 } from "./screem";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -53,6 +54,16 @@ export default function App() {
           component={Main}
           options={{
             headerShown: false,
+            tabBarVisible: true,
+          }}
+        />
+
+        <Stack.Screen
+          name="create"
+          component={Create}
+          options={{
+            headerShown: false,
+            tabBarVisible: false,
           }}
         />
 
@@ -61,32 +72,37 @@ export default function App() {
           component={ResetPassword}
           options={{
             headerShown: false,
+            tabBarVisible: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="trash"
+          component={Trash}
+          options={{
+            headerShown: false,
+            tabBarVisible: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="favorite"
+          component={Favorite}
+          options={{
+            headerShown: false,
+            tabBarVisible: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="group"
+          component={Group}
+          options={{
+            headerShown: false,
+            tabBarVisible: false,
           }}
         />
       </Stack.Navigator>
-      <Tab.Screen
-        name="main"
-        component={Main}
-        options={{
-          headerShown: false,
-        }}
-      />
-
-      <Tab.Screen
-        name="group"
-        component={Group}
-        options={{
-          headerShown: false,
-        }}
-      />
-
-      <Tab.Screen
-        name="favorite"
-        component={Favorite}
-        options={{
-          headerShown: false,
-        }}
-      />
     </NavigationContainer>
   );
 }
