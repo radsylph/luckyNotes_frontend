@@ -40,7 +40,6 @@ const Login = ({ navigation }) => {
       if (response.status == "200") {
         const token = response.data.token;
         await AsyncStorage.setItem("token", token);
-
         navigation.navigate("main");
       }
     } catch (error) {
