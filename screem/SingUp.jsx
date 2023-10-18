@@ -16,7 +16,7 @@ import Checkbox from "expo-checkbox";
 import Button from "../components/Button";
 import CustomAlert from "../components/Alert";
 
-const ResetPassword = ({ navigation }) => {
+const SingUp = ({ navigation }) => {
   const [isPasswordShown, setIsPasswordShown] = useState(true);
   const [isChecked, setIsChecked] = useState(false);
   const [username, setUsername] = useState("");
@@ -374,4 +374,4 @@ const ResetPassword = ({ navigation }) => {
   );
 };
 
-export default ResetPassword;
+export default SingUp;
