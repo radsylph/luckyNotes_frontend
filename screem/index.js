@@ -6,5 +6,18 @@ import ResetPassword from "./ResetPassword.jsx";
 import Trash from "./Trash.jsx";
 import Favorite from "./Favorite.jsx";
 import Group from "./Group.jsx";
+import Create from "./Create.jsx";
+import EditNote from "./Edit.jsx";
 
-export { Login, Welcome, SingUp, Main, ResetPassword, Trash, Favorite, Group };
+export {
+  Login,
+  Welcome,
+  SingUp,
+  Main,
+  ResetPassword,
+  Trash,
+  Favorite,
+  Group,
+  Create,
+  EditNote,
+};
