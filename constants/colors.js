@@ -3,7 +3,10 @@ const COLORS = {
   primary: "#DFC592",
   secundary: "#112E29",
   terceary: "#E4EBEC",
-  contras1: "#033D33",
+  contras1: "#0CA58A",
+  contras2: "#074D41",
+  gray: "rgba(178,178,178,0.5)",
+  alert: "#BF0B0B",
   quaternary: "#005B41",
   quientecary: "008170",
   gray: "rgba(178,178,178,0.5)",
@@ -18,6 +21,8 @@ const COLORS = {
   background: "#F5F5F5",
   border: "#CCCCCC",
   disabled: "#CCCCCC",
+  Delete: "#B70928",
+  favoritos: "#1B88C5",
 };
 
 export default COLORS;

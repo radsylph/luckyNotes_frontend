@@ -14,6 +14,8 @@ import {
   Group,
   Create,
   EditNote,
+  User,
+  DestroyAcount,
 } from "./screem";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -37,6 +39,20 @@ export default function App() {
         <Stack.Screen
           name="login"
           component={Login}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="user"
+          component={User}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="destroyacount"
+          component={DestroyAcount}
           options={{
             headerShown: false,
           }}

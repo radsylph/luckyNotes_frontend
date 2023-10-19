@@ -18,7 +18,7 @@ export default function BarButton({ navigation }) {
 
   const handleMailPress = () => {
     alert("Mail");
-    navigation.navigate("login");
+    navigation.navigate("main");
   };
 
   const handleSeriesPress = () => {
@@ -33,6 +33,7 @@ export default function BarButton({ navigation }) {
 
   const handleTrashPress = () => {
     alert("Trash");
+    navigation.navigate("trash");
   };
 
   return (
@@ -40,7 +41,7 @@ export default function BarButton({ navigation }) {
       style={{
         height: 60,
         backgroundColor: COLORS.secundary,
-        borderTopColor: COLORS.primary,
+        borderTopColor: COLORS.terceary,
         borderTopWidth: 1,
       }}
     >

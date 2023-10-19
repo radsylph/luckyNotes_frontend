@@ -20,6 +20,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import BarButton from "../components/BarButton";
+import HAader from "../components/HAader";
 
 const Main = ({ navigation }) => {
   const [token, setToken] = useState("");
@@ -56,41 +57,7 @@ const Main = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.primary }}>
-      <View
-        style={{
-          backgroundColor: COLORS.primary,
-          justifyContent: "space-between",
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "center",
-          height: 50,
-          borderBottomColor: COLORS.secundary,
-          borderBottomWidth: 1,
-        }}
-      >
-        <Image
-          source={require("../assets/2sintil.png")}
-          style={{
-            width: 48,
-            height: 25,
-          }}
-        />
-
-        <View>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("create");
-            }}
-          >
-            <Ionicons
-              style={{ marginVertical: 5 }}
-              name="add-circle"
-              size={40}
-              color={COLORS.secundary}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
+      <HAader navigation={navigation} />
 
       <View style={{ flex: 1 }}>
         <FlatList
