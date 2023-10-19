@@ -17,13 +17,14 @@ import CustomAlert from "../components/Alert";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const EditNote = ({ navigation }) => {
+const EditNote = ({ navigation, route }) => {
+  const { noteId, noteTitle, noteContent } = route.params;
   const [token, setToken] = useState("");
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessages, setAlertMessages] = useState([]);
   const [alertTitle, setAlertTitle] = useState("");
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [title, setTitle] = useState(noteTitle);
+  const [content, setContent] = useState(noteContent);
   const [series, setSeries] = useState("");
   const [fav, setFav] = useState(false);
   const [trash, setTrash] = useState(false);
@@ -69,7 +70,7 @@ const EditNote = ({ navigation }) => {
     console.log(userData);
     try {
       const response = await axios.post(
-        "https://luckynotesbackend-production.up.railway.app/note/create_note",
+        `https://luckynotesbackend-production.up.railway.app/note/edit_note/${noteId}`,
         userData,
         {
           headers: {
@@ -79,8 +80,9 @@ const EditNote = ({ navigation }) => {
         }
       );
 
-      if (response.status == "201") {
-        alert("Note created");
+      console.log(response.data.status);
+      if (response.status === 200) {
+        alert("Note Edited");
         navigation.navigate("main");
       }
     } catch (error) {
@@ -122,7 +124,7 @@ const EditNote = ({ navigation }) => {
                 color: COLORS.terceary,
               }}
             >
-              Create your notes
+              Edit your notes
             </Text>
 
             <View style={{ marginBottom: 12 }}>
@@ -240,7 +242,7 @@ const EditNote = ({ navigation }) => {
             </View>
 
             <Button
-              title="Create Note"
+              title="Edit Note"
               onPress={handleSubmit}
               style={{
                 marginTop: 18,
