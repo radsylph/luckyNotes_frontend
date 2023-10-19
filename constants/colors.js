@@ -8,7 +8,7 @@ const COLORS = {
   gray: "rgba(178,178,178,0.5)",
   alert: "#BF0B0B",
   quaternary: "#005B41",
-  quientecary: "008170",
+  quientecary: "#008170",
   gray: "rgba(178,178,178,0.5)",
   white: "#FFFFFF",
   primaryText: "#232D3F",
