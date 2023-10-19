@@ -13,13 +13,11 @@ const Welcome = ({ navigation }) => {
     try {
       const tokenAuth = await AsyncStorage.getItem("token");
       if (!tokenAuth) {
-        alert("please login again");
         deleteToken();
-        navigation.navigate("welcome");
+        navigation.navigate("login");
       }
       if (tokenAuth) {
         setToken(tokenAuth);
-        alert("welcome back");
         navigation.navigate("main");
       }
     } catch (error) {
@@ -42,15 +40,6 @@ const Welcome = ({ navigation }) => {
     // getToken();
   }, []);
 
-  const redirect = async () => {
-    getToken();
-    if (!token) {
-      navigation.navigate("login");
-    }
-    if (token) {
-      navigation.navigate("main");
-    }
-  };
   return (
     <LinearGradient
       style={{ flex: 1 }}
@@ -101,7 +90,7 @@ const Welcome = ({ navigation }) => {
             <View style={{ width: "100%" }}>
               <Button
                 title="Join Now"
-                onPress={redirect}
+                onPress={getToken}
                 style={{
                   marginTop: 22,
                 }}
