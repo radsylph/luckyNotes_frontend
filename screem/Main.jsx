@@ -73,7 +73,7 @@ const Main = ({ navigation }) => {
             name: nota.title,
             Descripcion: nota.content,
             id: nota._id,
-            fav: nota.fav,
+            favorite: nota.favorite,
             trash: nota.trash,
           };
         });
