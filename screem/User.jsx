@@ -23,6 +23,8 @@ import HAader2 from "../components/HAader2";
 
 const User = ({ navigation }) => {
   const [isPasswordShown, setIsPasswordShown] = useState(true);
+
+ 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.secundary }}>
       <HAader2 navigation={navigation} />
