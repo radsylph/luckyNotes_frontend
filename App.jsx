@@ -86,7 +86,7 @@ export default function App() {
 
         <Stack.Screen
           name="editNote"
-          component={Create}
+          component={EditNote}
           options={{
             headerShown: false,
             tabBarVisible: false,
