@@ -2,65 +2,29 @@ import { Text, View, TouchableOpacity, Pressable } from "react-native";
 import COLORS from "./colors";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "react-native/Libraries/NewAppScreen";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const ItemNote = [
-  {
-    id: 1,
-    name: "nota1",
-    Descripcion: "raul es marico",
-  },
+const getToken = async () => {
+  try {
+    const tokenAuth = await AsyncStorage.getItem("token");
+    if (!tokenAuth) {
+      alert("please login again");
+      deleteToken();
+      navigation.navigate("welcome");
+    }
+    if (tokenAuth) {
+      alert("welcomeasdasdasd");
+      setToken(tokenAuth);
+    }
+  } catch (error) {
+    console.log(error);
+    alert(error);
+  }
+};
 
-  {
-    id: 2,
-    name: "nota2",
-    Descripcion: "descripcion de nota 2",
-  },
-
-  {
-    id: 3,
-    name: "nota3",
-    Descripcion: "dracripcion de nota 3",
-  },
-
-  {
-    id: 4,
-    name: "nota1",
-    Descripcion: "raul es marico",
-  },
-
-  {
-    id: 5,
-    name: "nota2",
-    Descripcion: "descripcion de nota 2",
-  },
-
-  {
-    id: 6,
-    name: "nota3",
-    Descripcion: "dracripcion de nota 3",
-  },
-  {
-    id: 7,
-    name: "nota1",
-    Descripcion: "raul es marico",
-  },
-
-  {
-    id: 8,
-    name: "nota2",
-    Descripcion: "descripcion de nota 2",
-  },
-
-  {
-    id: 9,
-    name: "nota3",
-    Descripcion: "dracripcion de nota 3",
-  },
-];
-
-export const oneNote = ({ item }) => (
-  // <Text>{item.id}</Text> ,
-  //<Text>{item.Descripcion}</Text>
+const OneNote = ({ item, navigation }) => (
   <View
     style={{
       borderRadius: 20,
@@ -72,6 +36,13 @@ export const oneNote = ({ item }) => (
     }}
   >
     <Pressable
+      onPress={() => {
+        navigation.navigate("editNote", {
+          noteId: item.id,
+          noteTitle: item.name,
+          noteContent: item.Descripcion,
+        });
+      }}
       style={({ pressed }) => [
         {
           paddingLeft: 10,
@@ -156,3 +127,5 @@ export const oneNote = ({ item }) => (
     </View>
   </View>
 );
+
+export default OneNote;
