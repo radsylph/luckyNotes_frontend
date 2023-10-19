@@ -34,6 +34,7 @@ const Main = ({ navigation }) => {
         navigation.navigate("welcome");
       }
       if (tokenAuth) {
+        alert("welcome");
         setToken(tokenAuth);
       }
     } catch (error) {
