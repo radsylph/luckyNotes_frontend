@@ -16,11 +16,9 @@ import {
   EditNote,
   User,
   DestroyAcount,
+  CreateGroup,
+  GroupInside,
 } from "./screem";
-
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
-const Tab = createBottomTabNavigator();
 
 const Stack = createNativeStackNavigator();
 
@@ -78,6 +76,24 @@ export default function App() {
         <Stack.Screen
           name="create"
           component={Create}
+          options={{
+            headerShown: false,
+            tabBarVisible: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="createGroup"
+          component={CreateGroup}
+          options={{
+            headerShown: false,
+            tabBarVisible: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="groupInside"
+          component={GroupInside}
           options={{
             headerShown: false,
             tabBarVisible: false,
