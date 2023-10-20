@@ -7,6 +7,7 @@ import {
   Pressable,
 } from "react-native";
 import React, { useState, useEffect } from "react";
+
 import { SafeAreaView } from "react-native-safe-area-context";
 import COLORS from "../constants/colors";
 import { Colors } from "react-native/Libraries/NewAppScreen";
@@ -14,8 +15,11 @@ import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox";
 import Button from "../components/Button.jsx";
 import CustomAlert from "../components/Alert";
+import { SelectList } from "react-native-dropdown-select-list";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import HAader2 from "../components/HAader2";
+import GroupSelec from "../components/GroupSelec";
 
 const CreateNote = ({ navigation }) => {
   const [token, setToken] = useState("");
@@ -27,6 +31,8 @@ const CreateNote = ({ navigation }) => {
   const [series, setSeries] = useState("");
   const [fav, setFav] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [selected, setSelected] = useState(null);
+  const [data, setData] = useState([{ label: "None", value: null }]);
 
   const getToken = async () => {
     try {
@@ -38,6 +44,27 @@ const CreateNote = ({ navigation }) => {
       }
       if (tokenAuth) {
         setToken(tokenAuth);
+        try {
+          const response = await axios.get(
+            "https://luckynotesbackend-production.up.railway.app/note/series",
+
+            {
+              headers: {
+                Authorization: "Bearer " + tokenAuth,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          console.log(response.data);
+          const groups = response.data.series;
+          const userGroups = groups.map((item) => {
+            return { label: item._id, value: item.Name };
+          });
+          setData(userGroups);
+        } catch (error) {
+          console.log(error.response.data);
+          alert("test2");
+        }
       }
     } catch (error) {
       console.log(error);
@@ -53,6 +80,9 @@ const CreateNote = ({ navigation }) => {
       console.log(error);
     }
   };
+  useEffect(() => {
+    getToken();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -60,8 +90,7 @@ const CreateNote = ({ navigation }) => {
     const userData = {
       title,
       content,
-      series,
-      fav,
+      SerieId: selected,
     };
     console.log(userData);
     try {
@@ -82,9 +111,10 @@ const CreateNote = ({ navigation }) => {
       }
     } catch (error) {
       if (error.response.data.status == "405") {
-        alert("Session expired, please login again");
-        deleteToken();
-        navigation.navigate("welcome");
+        // alert("Session expired, please login again");
+        // deleteToken();
+        // navigation.navigate("welcome");
+        console.log(error.response.data);
       }
       let errors = error.response.data.errors;
       setAlertMessages(errors.map((error) => error.msg));
@@ -102,6 +132,7 @@ const CreateNote = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.secundary }}>
+      <HAader2 navigation={navigation} />
       <View style={{ flex: 1, marginHorizontal: 22 }}>
         <ScrollView>
           <View style={{ marginVertical: 22 }}>
@@ -160,6 +191,25 @@ const CreateNote = ({ navigation }) => {
                 />
               </View>
             </View>
+            <SelectList
+              placeholder="Select Folders"
+              searchPlaceholder="this are the folders"
+              inputStyles={{ color: COLORS.terceary }}
+              boxStyles={{
+                backgroundColor: COLORS.contras1,
+                borderColor: COLORS.terceary,
+                borderWidth: 1,
+              }}
+              dropdownStyles={{ backgroundColor: COLORS.secundary }}
+              dropdownItemStyles={{
+                backgroundColor: COLORS.terceary,
+                borderWidth: 1,
+                borderColor: COLORS.secundary,
+              }}
+              dropdownTextStyles={{ backgroundColor: COLORS.gray }}
+              data={data}
+              setSelected={setSelected}
+            />
             <View style={{ marginBottom: 12 }}>
               <Text
                 style={{
@@ -175,7 +225,7 @@ const CreateNote = ({ navigation }) => {
               <View
                 style={{
                   width: "100%",
-                  height: 48,
+                  height: 300,
                   borderColor: COLORS.primary,
                   borderWidth: 1,
                   borderRadius: 8,
@@ -194,6 +244,7 @@ const CreateNote = ({ navigation }) => {
                   onChangeText={(text) => setContent(text)}
                   keyboardType="default"
                   style={{
+                    textAlignVertical: "top",
                     color: COLORS.terceary,
                     width: "100%",
                     height: "100%",

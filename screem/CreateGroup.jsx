@@ -16,21 +16,14 @@ import Button from "../components/Button.jsx";
 import CustomAlert from "../components/Alert";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import GroupSelec from "../components/GroupSelec";
-import HAader2 from "../components/HAader2";
-import { SelectList } from "react-native-dropdown-select-list";
 
-const EditNote = ({ navigation, route }) => {
-  const { noteId, noteTitle, noteContent, noteSeries } = route.params;
+const CreateGroup = ({ navigation }) => {
   const [token, setToken] = useState("");
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessages, setAlertMessages] = useState([]);
   const [alertTitle, setAlertTitle] = useState("");
-  const [title, setTitle] = useState(noteTitle);
-  const [content, setContent] = useState(noteContent);
-  const [series, setSeries] = useState("");
-  const [selected, setSelected] = useState(noteSeries);
-  const [data, setData] = useState([]);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
 
   const getToken = async () => {
     try {
@@ -42,27 +35,6 @@ const EditNote = ({ navigation, route }) => {
       }
       if (tokenAuth) {
         setToken(tokenAuth);
-        try {
-          const response = await axios.get(
-            "https://luckynotesbackend-production.up.railway.app/note/series",
-
-            {
-              headers: {
-                Authorization: "Bearer " + tokenAuth,
-                "Content-Type": "application/json",
-              },
-            }
-          );
-          console.log(response.data);
-          const groups = response.data.series;
-          const userGroups = groups.map((item) => {
-            return { label: item._id, value: item.Name };
-          });
-          setData(userGroups);
-        } catch (error) {
-          console.log(error.response.data);
-          alert("test2");
-        }
       }
     } catch (error) {
       console.log(error);
@@ -83,14 +55,13 @@ const EditNote = ({ navigation, route }) => {
     e.preventDefault();
 
     const userData = {
-      title,
-      content,
-      SerieId: selected,
+      Name: title,
+      Description: description,
     };
     console.log(userData);
     try {
       const response = await axios.post(
-        `https://luckynotesbackend-production.up.railway.app/note/edit_note/${noteId}`,
+        "https://luckynotesbackend-production.up.railway.app/note/create_series",
         userData,
         {
           headers: {
@@ -100,10 +71,9 @@ const EditNote = ({ navigation, route }) => {
         }
       );
 
-      console.log(response.data.status);
       if (response.status === 200) {
-        alert("Note Edited");
-        navigation.navigate("main");
+        alert("group created");
+        navigation.navigate("group");
       }
     } catch (error) {
       if (error.response.data.status == "405") {
@@ -127,7 +97,6 @@ const EditNote = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.secundary }}>
-      <HAader2 navigation={navigation} />
       <View style={{ flex: 1, marginHorizontal: 22 }}>
         <ScrollView>
           <View style={{ marginVertical: 22 }}>
@@ -145,7 +114,7 @@ const EditNote = ({ navigation, route }) => {
                 color: COLORS.terceary,
               }}
             >
-              Edit your notes
+              Create your Group of notes
             </Text>
 
             <View style={{ marginBottom: 12 }}>
@@ -157,7 +126,7 @@ const EditNote = ({ navigation, route }) => {
                   color: COLORS.terceary,
                 }}
               >
-                Put your note title
+                Put your group title
               </Text>
 
               <View
@@ -174,7 +143,7 @@ const EditNote = ({ navigation, route }) => {
                 }}
               >
                 <TextInput
-                  placeholder="Note Title"
+                  placeholder="Group Title"
                   placeholderTextColor={COLORS.terceary}
                   keyboardType="default"
                   value={title}
@@ -186,25 +155,6 @@ const EditNote = ({ navigation, route }) => {
                 />
               </View>
             </View>
-            <SelectList
-              placeholder="Select Folders"
-              searchPlaceholder="this are the folders"
-              inputStyles={{ color: COLORS.terceary }}
-              boxStyles={{
-                backgroundColor: COLORS.contras1,
-                borderColor: COLORS.terceary,
-                borderWidth: 1,
-              }}
-              dropdownStyles={{ backgroundColor: COLORS.secundary }}
-              dropdownItemStyles={{
-                backgroundColor: COLORS.terceary,
-                borderWidth: 1,
-                borderColor: COLORS.secundary,
-              }}
-              dropdownTextStyles={{ backgroundColor: COLORS.gray }}
-              data={data}
-              setSelected={setSelected}
-            />
             <View style={{ marginBottom: 12 }}>
               <Text
                 style={{
@@ -214,17 +164,16 @@ const EditNote = ({ navigation, route }) => {
                   color: COLORS.terceary,
                 }}
               >
-                Content
+                some group description
               </Text>
 
               <View
                 style={{
                   width: "100%",
-                  height: 200,
+                  height: 48,
                   borderColor: COLORS.primary,
                   borderWidth: 1,
                   borderRadius: 8,
-                  marginVertical: 8,
                   alignItems: "center",
                   justifyContent: "center",
                   paddingLeft: 22,
@@ -234,14 +183,13 @@ const EditNote = ({ navigation, route }) => {
                 <TextInput
                   multiline={true}
                   numberOfLines={10}
-                  placeholder="Enter your note Content"
+                  placeholder="Enter your Group Description (optional)"
                   placeholderTextColor={COLORS.terceary}
-                  value={content}
-                  onChangeText={(text) => setContent(text)}
+                  value={description}
+                  onChangeText={(text) => setDescription(text)}
                   keyboardType="default"
                   style={{
                     color: COLORS.terceary,
-                    textAlignVertical: "top",
                     width: "100%",
                     height: "100%",
                   }}
@@ -250,7 +198,7 @@ const EditNote = ({ navigation, route }) => {
             </View>
 
             <Button
-              title="Edit Note"
+              title="Create Group"
               onPress={handleSubmit}
               style={{
                 marginTop: 18,
@@ -271,4 +219,4 @@ const EditNote = ({ navigation, route }) => {
   );
 };
 
-export default EditNote;
+export default CreateGroup;
