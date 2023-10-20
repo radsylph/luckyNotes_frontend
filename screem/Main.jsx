@@ -42,6 +42,7 @@ const Main = ({ navigation }) => {
   const getToken = async () => {
     try {
       const tokenAuth = await AsyncStorage.getItem("token");
+      console.log(tokenAuth);
       if (!tokenAuth) {
         alert("please login again");
         deleteToken();

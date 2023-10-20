@@ -17,11 +17,12 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { ItemNote, oneNote } from "../constants/ItemNote";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
+import axios from "axios";
 import BarButton from "../components/BarButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const HAader = ({ navigation }) => {
+  const [token, setToken] = useState("");
   const deleteToken = async () => {
     try {
       await AsyncStorage.removeItem("token");
@@ -31,11 +32,70 @@ const HAader = ({ navigation }) => {
     }
   };
 
-  const handleUserPress = () => {
-    alert("User");
-
-    navigation.navigate("user");
+  const getToken = async () => {
+    try {
+      const tokenAuth = await AsyncStorage.getItem("token");
+      if (!tokenAuth) {
+        alert("please login again");
+        //deleteToken();
+        //navigation.navigate("welcome");
+      }
+      if (tokenAuth) {
+        setToken(tokenAuth);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  const getUserInfo = async () => {
+    try {
+      if (!token) {
+        alert("please login again");
+        //deleteToken();
+        //navigation.navigate("welcome");
+      }
+      if (token) {
+        const response = await axios.get(
+          "https://luckynotesbackend-production.up.railway.app/auth/getUser",
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(response.status);
+        if (response.status === 200) {
+          console.log(response.data);
+          console.log(response.data.user.name);
+          console.log(response.data.user.email);
+          console.log(response.data.user.username);
+          console.log(response.data.user.lastname);
+          console.log(response.data.user._id);
+
+          navigation.navigate("user", {
+            CurrentName: response.data.user.name,
+            CurrentEmail: response.data.user.email,
+            CurrentUserName: response.data.user.username,
+            CurrentLastName: response.data.user.lastname,
+          });
+        }
+      }
+    } catch (error) {
+      console.log(error.status);
+      alert(error);
+    }
+  };
+
+  const handleUserPress = () => {
+    getUserInfo();
+    // navigation.navigate("user ");
+  };
+
+  useEffect(() => {
+    getToken();
+  }, []);
 
   const handleCreatePress = () => {
     alert("Create");
@@ -91,7 +151,6 @@ const HAader = ({ navigation }) => {
 
 const HAaderAl = ({ navigation }) => {
   const handleMAILPress = () => {
-    alert("Mail se");
     navigation.navigate("main");
   };
 
