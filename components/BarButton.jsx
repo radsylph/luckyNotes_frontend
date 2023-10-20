@@ -17,22 +17,18 @@ export default function BarButton({ navigation }) {
   const [activeCategory, setActiveCategory] = useState(1);
 
   const handleMailPress = () => {
-    alert("Mail");
     navigation.navigate("main");
   };
 
   const handleSeriesPress = () => {
-    alert("Series");
     navigation.navigate("group");
   };
 
   const handleFavPress = () => {
-    alert("Fav");
     navigation.navigate("favorite");
   };
 
   const handleTrashPress = () => {
-    alert("Trash");
     navigation.navigate("trash");
   };
 
