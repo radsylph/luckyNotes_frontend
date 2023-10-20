@@ -10,6 +10,8 @@ import Create from "./Create.jsx";
 import EditNote from "./Edit.jsx";
 import DestroyAcount from "./DestroyAcount.jsx";
 import User from "./User.jsx";
+import CreateGroup from "./CreateGroup.jsx";
+import GroupInside from "./GroupInside.jsx";
 
 export {
   Login,
@@ -24,4 +26,6 @@ export {
   EditNote,
   DestroyAcount,
   User,
+  CreateGroup,
+  GroupInside,
 };
