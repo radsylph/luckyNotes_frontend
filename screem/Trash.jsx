@@ -19,12 +19,12 @@ import { ItemNote, oneNote } from "../constants/ItemNote";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import BarButton from "../components/BarButton";
-import HAader from "../components/HAader";
+import HAader2 from "../components/HAader2";
 
 const Trash = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.primary }}>
-      <HAader />
+      <HAader2 navigation={navigation} />
 
       <View style={{ flex: 1, backgroundColor: COLORS.Delete }}>
         <FlatList

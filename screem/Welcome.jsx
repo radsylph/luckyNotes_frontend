@@ -41,103 +41,96 @@ const Welcome = ({ navigation }) => {
   }, []);
 
   return (
-    <LinearGradient
-      style={{ flex: 1 }}
-      colors={[COLORS.primary, COLORS.secundary]}
+    <SafeAreaView
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        paddingHorizontal: 12,
+        backgroundColor: COLORS.primary,
+      }}
     >
-      <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
-        <View style={{ flex: 1 }}>
-          <View style={{ alignItems: "center" }}>
-            <Image
-              source={require("../assets/2.png")}
+      <View style={{ flex: 1 }}>
+        <View style={{ alignItems: "center" }}>
+          <Image
+            source={require("../assets/2.png")}
+            style={{
+              top: 130,
+              height: 260,
+              width: 320,
+            }}
+          />
+        </View>
+
+        <View
+          style={{
+            borderTopLeftRadius: 50,
+            borderTopRightRadius: 50,
+            backgroundColor: COLORS.contras2,
+            paddingHorizontal: 22,
+            position: "absolute",
+            height: "100%",
+            top: "50%",
+            width: "100%",
+
+            alignItems: "center",
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 30,
+              fontWeight: 800,
+              color: COLORS.terceary,
+              marginVertical: 20,
+            }}
+          >
+            Lets Get Started
+          </Text>
+          <View style={{ marginVertical: 12 }}>
+            <Text
               style={{
-                top: 170,
-                height: 260,
-                width: 320,
+                fontSize: 16,
+                color: COLORS.terceary,
+                marginVertical: 4,
+              }}
+            >
+              Write notes & to-do lists
+            </Text>
+          </View>
+          <View style={{ width: "100%" }}>
+            <Button
+              title="Join Now"
+              onPress={getToken}
+              style={{
+                marginTop: 22,
               }}
             />
           </View>
           <View
             style={{
-              paddingHorizontal: 22,
-              position: "absolute",
-              top: 430,
-              width: "100%",
+              flexDirection: "row",
+              marginTop: 12,
               justifyContent: "center",
-              alignItems: "center",
             }}
           >
-            <Text
-              style={{
-                fontSize: 30,
-                fontWeight: 800,
-                color: COLORS.terceary,
-              }}
-            >
-              Lets Get Started
+            <Text style={{ fontSize: 13, color: COLORS.terceary }}>
+              Dont have an account ?
             </Text>
-            <View style={{ marginVertical: 12 }}>
+            <Pressable onPress={() => navigation.navigate("singUp")}>
               <Text
                 style={{
-                  fontSize: 16,
+                  fontSize: 13,
                   color: COLORS.terceary,
-                  marginVertical: 4,
+                  fontWeight: "bold",
+                  marginLeft: 4,
                 }}
               >
-                Write notes & to-do lists
+                SingUp
               </Text>
-            </View>
-            <View style={{ width: "100%" }}>
-              <Button
-                title="Join Now"
-                onPress={getToken}
-                style={{
-                  marginTop: 22,
-                }}
-              />
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                marginTop: 12,
-                justifyContent: "center",
-              }}
-            >
-              <Text style={{ fontSize: 13, color: COLORS.terceary }}>
-                Dont have an account ?
-              </Text>
-              <Pressable onPress={() => navigation.navigate("singUp")}>
-                <Text
-                  style={{
-                    fontSize: 13,
-                    color: COLORS.terceary,
-                    fontWeight: "bold",
-                    marginLeft: 4,
-                  }}
-                >
-                  SingUp
-                </Text>
-              </Pressable>
-              <Text style={{ fontSize: 13, color: COLORS.terceary }}>
-                Already have an account ?
-              </Text>
-              <Pressable onPress={() => navigation.navigate("login")}>
-                <Text
-                  style={{
-                    fontSize: 13,
-                    color: COLORS.terceary,
-                    fontWeight: "bold",
-                    marginLeft: 4,
-                  }}
-                >
-                  Login
-                </Text>
-              </Pressable>
-            </View>
+            </Pressable>
           </View>
         </View>
-      </SafeAreaView>
-    </LinearGradient>
+      </View>
+    </SafeAreaView>
   );
 };
 

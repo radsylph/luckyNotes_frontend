@@ -8,7 +8,7 @@ import {
   FlatList,
   Image,
 } from "react-native";
-import { React, useEffect, useRef, useState } from "react";
+import { React, useEffect, useRef, useState, useCallback } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import COLORS from "../constants/colors";
 import { Ionicons } from "@expo/vector-icons";
@@ -22,12 +22,22 @@ import OneNote from "../constants/ItemNote.jsx";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import BarButton from "../components/BarButton";
-import HAader from "../components/HAader";
+import { HAader } from "../components/HAader";
 import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 const Main = ({ navigation }) => {
   const [token, setToken] = useState("");
   const [notes, setNotes] = useState([]);
+  const [test, setTest] = useState(false);
+
+  const deleteToken = async () => {
+    try {
+      await AsyncStorage.removeItem("token");
+      console.log("token removed");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const getToken = async () => {
     try {
@@ -45,14 +55,6 @@ const Main = ({ navigation }) => {
       alert(error);
     }
   };
-  const deleteToken = async () => {
-    try {
-      await AsyncStorage.removeItem("token");
-      console.log("token removed");
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const getNotes = async () => {
     try {
@@ -65,6 +67,7 @@ const Main = ({ navigation }) => {
           },
         }
       );
+      console.log(response.data.status);
 
       if (response.data.status === 200) {
         const notes = response.data.notes;
@@ -81,6 +84,7 @@ const Main = ({ navigation }) => {
       }
     } catch (error) {
       console.log(error.response.data);
+      alert(error);
     }
   };
 
@@ -92,7 +96,17 @@ const Main = ({ navigation }) => {
     if (token) {
       getNotes();
     }
-  }, [token, notes]);
+  }, [token]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      if (token) {
+        getNotes();
+      }
+    });
+
+    return unsubscribe;
+  }, [token, navigation]);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.primary }}>
