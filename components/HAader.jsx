@@ -89,4 +89,64 @@ const HAader = ({ navigation }) => {
   );
 };
 
-export default HAader;
+const HAaderAl = ({ navigation }) => {
+  const handleMAILPress = () => {
+    alert("Mail se");
+    navigation.navigate("main");
+  };
+
+  const handleCreateGroup = () => {
+    navigation.navigate("createGroup");
+  };
+
+  return (
+    <View
+      style={{
+        backgroundColor: COLORS.contras2,
+        justifyContent: "space-between",
+        flexDirection: "row",
+        alignItems: "center",
+        height: 50,
+        borderBottomColor: COLORS.terceary,
+        borderBottomWidth: 1,
+      }}
+    >
+      <TouchableOpacity onPress={handleMAILPress}>
+        <Ionicons
+          style={{ marginVertical: 5 }}
+          name="chevron-back-outline"
+          size={40}
+          color={COLORS.terceary}
+        />
+      </TouchableOpacity>
+
+      <TouchableOpacity>
+        <Ionicons
+          style={{ marginVertical: 5 }}
+          name="add-circle"
+          size={40}
+          color={COLORS.contras2}
+        />
+      </TouchableOpacity>
+
+      <TouchableOpacity>
+        <Ionicons
+          style={{ marginVertical: 5 }}
+          name="add-circle"
+          size={40}
+          color={COLORS.contras2}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={handleCreateGroup}>
+        <Ionicons
+          style={{ marginVertical: 5 }}
+          name="add-circle"
+          size={40}
+          color={COLORS.primary}
+        />
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+export { HAaderAl, HAader };
