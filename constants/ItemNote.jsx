@@ -6,54 +6,56 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const getToken = async (noteId) => {
-  try {
-    const tokenAuth = await AsyncStorage.getItem("token");
-    if (!tokenAuth) {
-      alert("please login again");
-      // deleteToken();
-      // navigation.navigate("welcome");
-    }
-    if (tokenAuth) {
-      const token = tokenAuth;
-
-      try {
-        const response = await axios.patch(
-          `https://luckynotesbackend-production.up.railway.app/note/set_fav/${noteId}`,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        if (response.data.status === 200) {
-          console.log("success");
-        }
-      } catch (error) {
-        console.log(error.response.data);
-        alert("test2");
-      }
-    }
-  } catch (error) {
-    alert("test1");
-    console.log(error);
-  }
-};
-
 const OneNote = ({ item, navigation }) => {
   const [isBookmarked, setIsBookmarked] = useState(false);
 
+  const deleteToken = async () => {
+    try {
+      await AsyncStorage.removeItem("token");
+      console.log("token removed");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getToken = async (noteId) => {
+    try {
+      const tokenAuth = await AsyncStorage.getItem("token");
+      if (!tokenAuth) {
+        alert("please login again");
+        deleteToken();
+        navigation.navigate("welcome");
+      }
+      if (tokenAuth) {
+        const token = tokenAuth;
+
+        try {
+          const response = await axios.patch(
+            `https://luckynotesbackend-production.up.railway.app/note/set_fav/${noteId}`,
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          if (response.data.status === 200) {
+            console.log("success");
+          }
+        } catch (error) {
+          console.log(error.response.data);
+          alert("test2");
+        }
+      }
+    } catch (error) {
+      alert("test1");
+      console.log(error);
+    }
+  };
   const handleBookmarkPress = async (noteId) => {
-    // Call the getToken function to set the note as favorite
     await getToken(noteId);
 
-    // Update the state to indicate that the note has been bookmarked
-    if (isBookmarked) {
-      setIsBookmarked(false);
-    } else {
-      setIsBookmarked(true);
-    }
+    setIsBookmarked(!isBookmarked);
   };
 
   return (
@@ -74,6 +76,7 @@ const OneNote = ({ item, navigation }) => {
             noteTitle: item.name,
             noteContent: item.Descripcion,
             noteFavorite: item.favorite,
+            noteSeries: item.SerieId,
           });
         }}
         style={({ pressed }) => [
