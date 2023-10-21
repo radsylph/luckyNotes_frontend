@@ -72,7 +72,7 @@ const CreateGroup = ({ navigation }) => {
       );
 
       if (response.status === 200) {
-        alert("group created");
+        
         navigation.navigate("group");
       }
     } catch (error) {
