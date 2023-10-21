@@ -75,15 +75,6 @@ export default function BarButton({ navigation }) {
             color={COLORS.terceary}
           />
         </TouchableOpacity>
-
-        <TouchableOpacity onPress={handleTrashPress}>
-          <Ionicons
-            style={{ marginVertical: 12, marginBottom: 15 }}
-            name="trash-outline"
-            size={30}
-            color={COLORS.terceary}
-          />
-        </TouchableOpacity>
       </View>
     </View>
   );
