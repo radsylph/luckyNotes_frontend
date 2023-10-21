@@ -106,7 +106,6 @@ const CreateNote = ({ navigation }) => {
       );
 
       if (response.status == "201") {
-        alert("Note created");
         navigation.navigate("main");
       }
     } catch (error) {
@@ -251,23 +250,6 @@ const CreateNote = ({ navigation }) => {
                   }}
                 />
               </View>
-            </View>
-
-            <View
-              style={{
-                flexDirection: "row",
-                marginVertical: 6,
-              }}
-            >
-              <Checkbox
-                style={{
-                  marginRight: 8,
-                }}
-                value={fav}
-                onValueChange={setFav}
-                color={isChecked ? COLORS.primary : undefined}
-              />
-              <Text style={{ color: COLORS.terceary }}>Fav</Text>
             </View>
 
             <Button
