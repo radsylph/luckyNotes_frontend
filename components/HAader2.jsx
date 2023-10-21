@@ -22,7 +22,6 @@ import BarButton from "../components/BarButton";
 
 const HAader2 = ({ navigation }) => {
   const handleMAILPress = () => {
-    alert("Mail se");
     navigation.navigate("main");
   };
 
