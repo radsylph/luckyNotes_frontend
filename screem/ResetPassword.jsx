@@ -125,7 +125,7 @@ const ResetPassword = ({ navigation }) => {
             </View>
 
             <Button
-              title="login"
+              title="Reset password"
               onPress={handleSubmit}
               style={{
                 marginTop: 18,

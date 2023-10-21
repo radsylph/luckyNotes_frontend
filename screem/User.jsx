@@ -36,8 +36,8 @@ const User = ({ navigation, route }) => {
       const tokenAuth = await AsyncStorage.getItem("token");
       if (!tokenAuth) {
         alert("please login again");
-        //deleteToken();
-        //navigation.navigate("welcome");
+        // deleteToken();
+        // navigation.navigate("welcome");
       }
       if (tokenAuth) {
         setToken(tokenAuth);
@@ -197,42 +197,6 @@ const User = ({ navigation, route }) => {
                 />
               </View>
             </View>
-            <View style={{ marginBottom: 12 }}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: 400,
-                  marginVertical: 8,
-                  color: COLORS.terceary,
-                }}
-              >
-                email
-              </Text>
-
-              <View
-                style={{
-                  width: "100%",
-                  height: 48,
-                  borderColor: COLORS.primary,
-                  borderWidth: 1,
-                  borderRadius: 8,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  paddingLeft: 22,
-                  backgroundColor: "rgba(178,178,178,0.5)",
-                }}
-              >
-                <TextInput
-                  placeholder="Enter your User Name"
-                  placeholderTextColor={COLORS.terceary}
-                  keyboardType="default"
-                  style={{
-                    color: COLORS.terceary,
-                    width: "100%",
-                  }}
-                />
-              </View>
-            </View>
 
             <Button
               title="Change Credentials"
@@ -249,6 +213,18 @@ const User = ({ navigation, route }) => {
             <Button
               title="Delete acount"
               onPress={() => navigation.navigate("destroyacount")}
+              style={{
+                borderColor: COLORS.terceary,
+                color: COLORS.terceary,
+                backgroundColor: COLORS.alert,
+                marginTop: 18,
+                marginBottom: 4,
+              }}
+            />
+
+            <Button
+              title="Reset Password"
+              onPress={() => navigation.navigate("resetPassword")}
               style={{
                 borderColor: COLORS.terceary,
                 color: COLORS.terceary,
