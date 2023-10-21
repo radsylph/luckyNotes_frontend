@@ -37,8 +37,8 @@ const HAader = ({ navigation }) => {
       const tokenAuth = await AsyncStorage.getItem("token");
       if (!tokenAuth) {
         alert("please login again");
-        //deleteToken();
-        //navigation.navigate("welcome");
+        deleteToken();
+        navigation.navigate("welcome");
       }
       if (tokenAuth) {
         setToken(tokenAuth);
@@ -98,7 +98,7 @@ const HAader = ({ navigation }) => {
   }, []);
 
   const handleCreatePress = () => {
-    alert("Create");
+
     navigation.navigate("create");
   };
 
