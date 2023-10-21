@@ -18,7 +18,46 @@ const OneNote = ({ item, navigation }) => {
     }
   };
 
-  const getToken = async (noteId) => {
+  const deleteNote = async (noteId) => {
+    try {
+      const tokenAuth = await AsyncStorage.getItem("token");
+      if (!tokenAuth) {
+        alert("please login again");
+        deleteToken();
+        navigation.navigate("welcome");
+      }
+      if (tokenAuth) {
+        const token = tokenAuth;
+
+        try {
+          const response = await axios.delete(
+            `https://luckynotesbackend-production.up.railway.app/note/delete_note/${noteId}`,
+            {
+              headers: {
+                Authorization: "Bearer " + token,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          if (response.data.status === 200) {
+            console.log("success");
+            navigation.reset({
+              index: 0,
+              routes: [{ name: "main" }],
+            });
+          }
+        } catch (error) {
+          console.log(error.response.data);
+          alert("test2");
+        }
+      }
+    } catch (error) {
+      alert("test1");
+      console.log(error);
+    }
+  };
+
+  const setFav = async (noteId) => {
     try {
       const tokenAuth = await AsyncStorage.getItem("token");
       if (!tokenAuth) {
@@ -35,12 +74,17 @@ const OneNote = ({ item, navigation }) => {
             {},
             {
               headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: "Bearer " + token,
+                "Content-Type": "application/json",
               },
             }
           );
           if (response.data.status === 200) {
             console.log("success");
+            navigation.reset({
+              index: 0,
+              routes: [{ name: "main" }, { name: "favorite" }],
+            });
           }
         } catch (error) {
           console.log(error.response.data);
@@ -52,10 +96,13 @@ const OneNote = ({ item, navigation }) => {
       console.log(error);
     }
   };
-  const handleBookmarkPress = async (noteId) => {
-    await getToken(noteId);
 
-    setIsBookmarked(!isBookmarked);
+  const handleBookmarkPress = async (noteId) => {
+    await setFav(noteId);
+  };
+
+  const handleBinPress = async (noteId) => {
+    await deleteNote(noteId);
   };
 
   return (
@@ -99,7 +146,9 @@ const OneNote = ({ item, navigation }) => {
         >
           {item.name}
         </Text>
-        <Text style={{ color: COLORS.terceary }}>{item.Descripcion}</Text>
+        <Text style={{ color: COLORS.terceary }}>
+          {item.Descripcion.length > 20 ? "..." : item.Descripcion}
+        </Text>
       </Pressable>
 
       <View
@@ -110,23 +159,6 @@ const OneNote = ({ item, navigation }) => {
           position: "relative",
         }}
       >
-        <Pressable
-          style={({ pressed }) => [
-            {
-              backgroundColor: pressed ? COLORS.contras1 : COLORS.secundary,
-              borderRadius: 20,
-              marginHorizontal: 3,
-            },
-          ]}
-        >
-          <Ionicons
-            style={{ marginVertical: 12, marginHorizontal: 8 }}
-            name="archive-outline"
-            size={30}
-            color={COLORS.terceary}
-          />
-        </Pressable>
-
         <Pressable
           onPress={() => handleBookmarkPress(item.id)}
           style={({ pressed }) => [
@@ -150,6 +182,7 @@ const OneNote = ({ item, navigation }) => {
         </Pressable>
 
         <Pressable
+          onPress={() => handleBinPress(item.id)}
           style={({ pressed }) => [
             {
               backgroundColor: pressed ? COLORS.alert : COLORS.secundary,

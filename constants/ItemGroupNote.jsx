@@ -18,7 +18,7 @@ const OneGroupNote = ({ item, navigation }) => {
     }
   };
 
-  const getToken = async (noteId) => {
+  const setFav = async (noteId) => {
     try {
       const tokenAuth = await AsyncStorage.getItem("token");
       if (!tokenAuth) {
@@ -52,10 +52,44 @@ const OneGroupNote = ({ item, navigation }) => {
       console.log(error);
     }
   };
-  const handleBookmarkPress = async (noteId) => {
-    await getToken(noteId);
 
-    setIsBookmarked(!isBookmarked);
+  const deleteNote = async (noteId) => {
+    try {
+      const tokenAuth = await AsyncStorage.getItem("token");
+      if (!tokenAuth) {
+        alert("please login again");
+        deleteToken();
+        navigation.navigate("welcome");
+      }
+      if (tokenAuth) {
+        const token = tokenAuth;
+
+        try {
+          const response = await axios.delete(
+            `https://luckynotesbackend-production.up.railway.app/note/delete_note/${noteId}`,
+            {
+              headers: {
+                Authorization: "Bearer " + token,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          if (response.data.status === 200) {
+            console.log("success");
+            navigation.reset({
+              index: 0,
+              routes: [{ name: "group" }],
+            });
+          }
+        } catch (error) {
+          console.log(error.response.data);
+          alert("test2");
+        }
+      }
+    } catch (error) {
+      alert("test1");
+      console.log(error);
+    }
   };
 
   return (
@@ -111,24 +145,7 @@ const OneGroupNote = ({ item, navigation }) => {
         }}
       >
         <Pressable
-          style={({ pressed }) => [
-            {
-              backgroundColor: pressed ? COLORS.contras1 : COLORS.secundary,
-              borderRadius: 20,
-              marginHorizontal: 3,
-            },
-          ]}
-        >
-          <Ionicons
-            style={{ marginVertical: 12, marginHorizontal: 8 }}
-            name="archive-outline"
-            size={30}
-            color={COLORS.terceary}
-          />
-        </Pressable>
-
-        <Pressable
-          onPress={() => handleBookmarkPress(item.id)}
+          onPress={() => setFav(item.id)}
           style={({ pressed }) => [
             {
               backgroundColor: isBookmarked
@@ -150,6 +167,9 @@ const OneGroupNote = ({ item, navigation }) => {
         </Pressable>
 
         <Pressable
+          onPress={() => {
+            deleteNote(item.id);
+          }}
           style={({ pressed }) => [
             {
               backgroundColor: pressed ? COLORS.alert : COLORS.secundary,

@@ -17,6 +17,49 @@ const OneGroup = ({ item, navigation }) => {
     }
   };
 
+  const deleteSerie = async (serieId) => {
+    try {
+      const tokenAuth = await AsyncStorage.getItem("token");
+      if (!tokenAuth) {
+        alert("please login again");
+        deleteToken();
+        navigation.navigate("welcome");
+      }
+      if (tokenAuth) {
+        const token = tokenAuth;
+
+        try {
+          const response = await axios.delete(
+            `https://luckynotesbackend-production.up.railway.app/note/delete_serie/${serieId}`,
+            {
+              headers: {
+                Authorization: "Bearer " + token,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          if (response.data.status === 200) {
+            console.log("success");
+            navigation.reset({
+              index: 0,
+              routes: [{ name: "group" }],
+            });
+          }
+        } catch (error) {
+          console.log(error.response.data);
+          alert("test2");
+        }
+      }
+    } catch (error) {
+      alert("test1");
+      console.log(error);
+    }
+  };
+
+  const handleBin = (serieId) => {
+    deleteSerie(serieId);
+  };
+
   const getToken = async (groupId) => {
     try {
       const tokenAuth = await AsyncStorage.getItem("token");
@@ -72,7 +115,9 @@ const OneGroup = ({ item, navigation }) => {
         >
           {item.name}
         </Text>
-        <Text style={{ color: COLORS.terceary }}>{item.Description}</Text>
+        <Text style={{ color: COLORS.terceary }}>
+          {item.Description.lenght >= 20 ? "..." : item.Description}
+        </Text>
       </Pressable>
 
       <View
@@ -84,6 +129,9 @@ const OneGroup = ({ item, navigation }) => {
         }}
       >
         <Pressable
+          onPress={() => {
+            deleteSerie(item.id);
+          }}
           style={({ pressed }) => [
             {
               backgroundColor: pressed ? COLORS.contras1 : COLORS.secundary,
@@ -94,7 +142,7 @@ const OneGroup = ({ item, navigation }) => {
         >
           <Ionicons
             style={{ marginVertical: 12, marginHorizontal: 8 }}
-            name="archive-outline"
+            name="trash-outline"
             size={30}
             color={COLORS.terceary}
           />
