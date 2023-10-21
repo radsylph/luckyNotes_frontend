@@ -52,8 +52,11 @@ const Main = ({ navigation }) => {
         setToken(tokenAuth);
       }
     } catch (error) {
-      console.log(error);
-      alert(error);
+      if (error.response.data.status === 500) {
+        alert("please login again");
+        deleteToken();
+        navigation.navigate("welcome");
+      }
     }
   };
 
@@ -69,7 +72,6 @@ const Main = ({ navigation }) => {
         }
       );
       console.log(response.data.status);
-
       if (response.data.status === 200) {
         const notes = response.data.notes;
         const UserNotes = notes.map((nota) => {
@@ -84,8 +86,11 @@ const Main = ({ navigation }) => {
         setNotes(UserNotes);
       }
     } catch (error) {
-      console.log(error.response.data);
-      alert(error);
+      if (error.response.data.status === 500) {
+        alert("please login again");
+        deleteToken();
+        navigation.navigate("welcome");
+      }
     }
   };
 

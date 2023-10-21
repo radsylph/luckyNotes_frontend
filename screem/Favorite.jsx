@@ -91,7 +91,16 @@ const Favorite = ({ navigation }) => {
     if (token) {
       getFavNotes();
     }
-  }, [token, getFavNotes]);
+  }, [token]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      if (token) {
+        getFavNotes();
+      }
+    });
+    return unsubscribe;
+  }, [token, navigation]);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.primary }}>

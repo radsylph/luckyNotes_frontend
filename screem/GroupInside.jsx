@@ -18,15 +18,15 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { ItemNote, oneNote } from "../constants/ItemNote";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import BarButton from "../components/BarButton";
-import { HAaderAl } from "../components/HAader";
+import HAader2 from "../components/HAader2";
 import OneGroupNote from "../constants/ItemGroupNote.jsx";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 const GroupInside = ({ navigation, route }) => {
-  const { groupId, groupName } = route.params;
   const [token, setToken] = useState("");
   const [groupsNotes, setGroupsNotes] = useState([]);
+  const { groupName } = route.params;
 
   const deleteToken = async () => {
     try {
@@ -104,7 +104,7 @@ const GroupInside = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.primary }}>
-      <HAaderAl navigation={navigation} />
+      <HAader2 navigation={navigation} />
 
       <View style={{ flex: 1, backgroundColor: COLORS.quaternary }}>
         <FlatList
